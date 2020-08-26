@@ -51,11 +51,17 @@
 }
 ```
 ### 返ってくるjson
+200
 ```json
 {
-  "add": true,
-  "id": "nanigasi_san",
-  "password": "unchiburi"
+  "message": "add user nanigasi_san.",
+}
+```
+
+404
+```json
+{
+  "message": "user nanigasi_san is exists."
 }
 ```
 
@@ -88,6 +94,6 @@ passwordチェック
 ### 返ってくるjson
 ```json
 {
-  "ok": false
+  "check": true
 }
 ```

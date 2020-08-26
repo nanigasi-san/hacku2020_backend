@@ -1,7 +1,7 @@
 class User:
-    def __init__(self, id: int, password: str):
+    def __init__(self, id: str, password: str):
         self.id = id
-        self.__password = password
+        self.password = password
 
 
 class StockData:
@@ -14,5 +14,5 @@ class Standings:
 class Contest:
     def __init__(self, contest_name: str, period: tuple, stock_data: StockData):
         self.period = period
-        self.__stock_data = stock_data
+        self.stock_data = stock_data
         self.standings = Standings(contest_name)
