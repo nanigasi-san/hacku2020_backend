@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, abort
-from models import User
 import db
 
 app = Flask(__name__)
@@ -12,22 +11,22 @@ def index():
 
 @app.route("/user/add", methods=["POST"])
 def add_user():
-    new_user = User(request.json["id"], request.json["password"])
-    if new_user.id in db.list_user_ids():
-        return jsonify({"message": f"user {new_user.id} is exists."}), 404
-    db.add_user(new_user)
-    return jsonify({"message": f"add user {new_user.id}."}), 200
+    username, password_hash_md5 = request.json["username"], request.json["password_hash"]
+    if username in db.list_user_usernames():
+        return jsonify({"message": f"user {username} is exists."}), 404
+    db.add_user(username, password_hash_md5)
+    return jsonify({"message": f"add user {username}."}), 200
 
 
-@app.route("/user/login", methods=["POST"])
+@app.route("/user/login", methods = ["POST"])
 def login_user():
-    user = User(request.json["id"], request.json["password"])
-    return jsonify({"check": db.check_password(user)})
+    username, password_hash_md5=request.json["username"], request.json["password_hash"]
+    return jsonify({"check": db.check_password_hash(username, password_hash_md5)})
 
 
 @app.route("/user/list")
 def list_users():
-    return jsonify(db.list_user_ids())
+    return jsonify(db.list_user_usernames())
 
 
 app.run(debug=True)

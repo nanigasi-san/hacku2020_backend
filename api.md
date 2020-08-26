@@ -6,9 +6,6 @@
 
 ## 要件定義
 ### ユーザー関連
-#### ユーザー
-+ ID（ユニーク）
-+ パスワード
 
 1. ユーザーを登録する
 2. ユーザー一覧の取得
@@ -46,8 +43,8 @@
 ### 送るjson
 ```json
 {
-  "id": "nanigasi_san",
-  "password": "unchiburi"
+  "username": "nanigasi_san",
+  "password_hash": "1a1dc91c907325c69271ddf0c944bc72"
 }
 ```
 ### 返ってくるjson
@@ -69,7 +66,7 @@
 
 `/user/list` [GET]
 ### 概要
-ユーザーid一覧
+username一覧
 ### 送るjson
 ### 返ってくるjson
 ```json
@@ -83,12 +80,12 @@
 
 `/user/login` [POST]
 ### 概要
-passwordチェック
+password_hashのチェック
 ### 送るjson
 ```json
 {
-  "id": "nanigasi_san",
-  "password": "pasword"
+  "username": "nanigasi_san",
+  "password_hash": "1a1dc91c907325c69271ddf0c944bc72"
 }
 ```
 ### 返ってくるjson

@@ -1,5 +1,4 @@
 import sqlite3
-from models import User
 
 
 class AutoCloseCursur(sqlite3.Cursor):
@@ -16,22 +15,23 @@ class AutoCloseCursur(sqlite3.Cursor):
 def setup():
     with sqlite3.connect("db.sqlite3") as conn:
         with AutoCloseCursur(conn) as cur:
-            cur.execute("CREATE TABLE Users (id char, password char)")
+            cur.execute("CREATE TABLE Users (username char, password_hash_md5 char)")
+            cur.execute("CREATE TABLE Standings (contest_name char, username char, score int)")
         conn.commit()
 
 
-def add_user(userdata: User):
+def add_user(username: str, password_hash_md5: str):
     with sqlite3.connect("db.sqlite3") as conn:
         with AutoCloseCursur(conn) as cur:
-            cur.execute("INSERT INTO Users VALUES (?, ?)", (userdata.id, userdata.password))
+            cur.execute("INSERT INTO Users VALUES (?, ?)", (username, password_hash_md5))
         conn.commit()
 
 
-def check_password(userdata: User):
+def check_password_hash(username: str, password_hash_md5: str):
     with sqlite3.connect("db.sqlite3") as conn:
         with AutoCloseCursur(conn) as cur:
-            cur.execute("SELECT password FROM Users WHERE id=?", (userdata.id,))
-            return cur.fetchone()[0] == userdata.password
+            cur.execute("SELECT password_hash_md5 FROM Users WHERE username=?", (username,))
+            return cur.fetchone()[0] == password_hash_md5
 
 
 def list_users():
@@ -41,8 +41,8 @@ def list_users():
             return cur.fetchall()
 
 
-def list_user_ids():
+def list_user_usernames():
     with sqlite3.connect("db.sqlite3") as conn:
         with AutoCloseCursur(conn) as cur:
-            cur.execute("SELECT id FROM Users")
+            cur.execute("SELECT username FROM Users")
             return tuple((data[0] for data in cur.fetchall()))
